@@ -1,13 +1,23 @@
+import { count, sql } from "drizzle-orm";
+import { db } from "../../db";
+import { roasts } from "../../db/schema";
 import { procedure, router } from "../init";
 
 export const appRouter = router({
   getMetrics: procedure.query(async () => {
-    // Simulated delay to show loading state
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    // Get total roasts count
+    const [totalRoasts] = await db.select({ value: count() }).from(roasts);
+
+    // Get average score
+    const [averageScore] = await db
+      .select({
+        value: sql<number>`AVG(CAST(${roasts.score} AS numeric))`,
+      })
+      .from(roasts);
 
     return {
-      roastedCodes: 2349,
-      avgScore: 4.2,
+      roastedCodes: totalRoasts?.value ?? 0,
+      avgScore: Number(Number(averageScore?.value ?? 0).toFixed(1)),
     };
   }),
 });
