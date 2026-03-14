@@ -36,12 +36,12 @@ export function Toggle({
             : "bg-transparent border-zinc-300 dark:border-zinc-600",
         )}
       >
-         <Switch.Thumb
-           className={clsx(
-             thumbBase,
-             checked ? "translate-x-4.5 bg-text-primary" : "translate-x-0 bg-text-secondary",
-           )}
-         />
+        <Switch.Thumb
+          className={clsx(
+            thumbBase,
+            checked ? "translate-x-4.5 bg-text-primary" : "translate-x-0 bg-text-secondary",
+          )}
+        />
       </Switch.Root>
       {label && (
         <span

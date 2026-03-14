@@ -1,9 +1,10 @@
 import { CodeEditorWrapper } from "./components/code-editor-wrapper";
 import { LeaderboardRow } from "./components/leaderboard-row";
-import { LeaderboardRowRank } from "./components/leaderboard-row-rank";
-import { LeaderboardRowScore } from "./components/leaderboard-row-score";
 import { LeaderboardRowCode } from "./components/leaderboard-row-code";
 import { LeaderboardRowLanguage } from "./components/leaderboard-row-language";
+import { LeaderboardRowRank } from "./components/leaderboard-row-rank";
+import { LeaderboardRowScore } from "./components/leaderboard-row-score";
+import { Metrics } from "./components/metrics";
 
 export default function HomePage() {
   return (
@@ -21,11 +22,7 @@ export default function HomePage() {
 
         <CodeEditorWrapper />
 
-        <div className="flex justify-center items-center gap-4 text-[10px] text-text-tertiary uppercase tracking-widest font-black">
-          <span>2,349 codes roasted</span>
-          <span className="h-1 w-1 rounded-full bg-text-tertiary" />
-          <span>avg roast: 4.2/10</span>
-        </div>
+        <Metrics />
       </section>
 
       {/* Leaderboard Preview */}

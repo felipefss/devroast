@@ -6,10 +6,7 @@ export interface LeaderboardRowRankProps extends HTMLAttributes<HTMLSpanElement>
 
 export function LeaderboardRowRank({ children, className, ...props }: LeaderboardRowRankProps) {
   return (
-    <span
-      className="text-lg font-black text-orange-500 leading-none"
-      {...props}
-    >
+    <span className="text-lg font-black text-orange-500 leading-none" {...props}>
       {children}
     </span>
   );

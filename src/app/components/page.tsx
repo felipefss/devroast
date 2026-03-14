@@ -15,7 +15,9 @@ export default function ComponentsPage() {
 
         <ServerComponentsPage />
 
-        <Suspense fallback={<div className="animate-pulse h-48 bg-zinc-100 dark:bg-zinc-800 rounded-lg" />}>
+        <Suspense
+          fallback={<div className="animate-pulse h-48 bg-zinc-100 dark:bg-zinc-800 rounded-lg" />}
+        >
           <ClientToggleSection />
         </Suspense>
       </div>

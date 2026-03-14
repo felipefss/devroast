@@ -20,11 +20,7 @@ export function ClientToggleSection() {
         </div>
         <div className="space-y-3">
           <h3 className="text-sm font-medium text-zinc-600 dark:text-zinc-400">Interativo</h3>
-          <Toggle
-            checked={toggleChecked}
-            onCheckedChange={setToggleChecked}
-            label="roast mode"
-          />
+          <Toggle checked={toggleChecked} onCheckedChange={setToggleChecked} label="roast mode" />
           <p className="text-sm text-zinc-500">Estado: {toggleChecked ? "on" : "off"}</p>
         </div>
       </div>

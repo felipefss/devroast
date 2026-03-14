@@ -13,6 +13,16 @@
           }
         }
       }
+    },
+    {
+      "includes": ["src/components/ui/code-editor-highlighted.tsx"],
+      "linter": {
+        "rules": {
+          "security": {
+            "noDangerouslySetInnerHtml": "off"
+          }
+        }
+      }
     }
   ],
   "formatter": {
