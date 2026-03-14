@@ -1,6 +1,6 @@
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardHeader, CardDescription } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Card, CardDescription, CardHeader } from "@/components/ui/card";
 import { CodeBlock } from "@/components/ui/code-block";
 
 const buttonVariants = ["default", "secondary", "outline", "ghost", "destructive", "link"] as const;
@@ -89,8 +89,8 @@ export function ServerComponentsPage() {
             </CardHeader>
             <CardDescription>
               the var keyword is function-scoped rather than block-scoped, which can lead to
-              unexpected behavior and bugs. modern javascript uses const for immutable bindings
-              and let for mutable ones.
+              unexpected behavior and bugs. modern javascript uses const for immutable bindings and
+              let for mutable ones.
             </CardDescription>
           </Card>
           <Card variant="destructive">
@@ -98,9 +98,7 @@ export function ServerComponentsPage() {
               <Badge variant="critical" />
               <span className="text-zinc-900 dark:text-zinc-100">Error example</span>
             </CardHeader>
-            <CardDescription>
-              This is a destructive card variant for error states.
-            </CardDescription>
+            <CardDescription>This is a destructive card variant for error states.</CardDescription>
           </Card>
         </div>
       </section>
@@ -108,8 +106,20 @@ export function ServerComponentsPage() {
       <section className="space-y-6">
         <h2 className="text-xl font-semibold text-zinc-900 dark:text-zinc-50">CodeBlock</h2>
         <div className="space-y-4">
-          <CodeBlock code={sampleCode} filename="calculate.js" />
-          <CodeBlock code={sampleCode} showLineNumbers={false} />
+          <div className="rounded-md border border-border-primary bg-bg-surface overflow-hidden">
+            <div className="flex items-center justify-between px-5 py-3 border-b border-border-primary bg-bg-surface">
+              <div className="flex h-10 items-center gap-3">
+                <span className="h-2.5 w-2.5 rounded-full bg-accent-red" />
+                <span className="h-2.5 w-2.5 rounded-full bg-accent-amber" />
+                <span className="h-2.5 w-2.5 rounded-full bg-accent-green" />
+              </div>
+              <span className="font-mono text-xs text-text-tertiary">calculate.js</span>
+            </div>
+            <CodeBlock code={sampleCode} />
+          </div>
+          <div className="rounded-md border border-border-primary bg-bg-surface overflow-hidden">
+            <CodeBlock code={sampleCode} showLineNumbers={false} />
+          </div>
         </div>
       </section>
     </>
