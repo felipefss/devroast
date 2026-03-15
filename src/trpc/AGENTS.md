@@ -15,6 +15,7 @@ Este diretório contém a configuração e os routers do tRPC, servindo como cam
    - Defina os endpoints dentro da pasta `routers/` e englobe-os no `appRouter` principal.
    - Utilize a biblioteca `zod` para validação de input (`input(z.object({...}))`).
    - Mantenha a tipagem sempre forte e injetada no router final.
+   - **Performance em Queries**: Sempre que uma procedure precisar realizar múltiplas consultas independentes ao banco de dados (ex: com Drizzle), utilize `await Promise.all([...])` para executá-las em paralelo e reduzir o tempo de resposta.
 
 2. **Como chamar o tRPC na Aplicação**
    - **Em Server Components (`src/app/...`)**: Importe de `@/trpc/server` e faça a chamada assíncrona diretamente. Exemplo: `await trpc.getMetrics()`. NUNCA use o client aqui para evitar fetch via HTTP desnecessário, o server caller faz chamada de função direta.

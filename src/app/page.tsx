@@ -1,9 +1,7 @@
+import { Suspense } from "react";
 import { CodeEditorWrapper } from "./components/code-editor-wrapper";
-import { LeaderboardRow } from "./components/leaderboard-row";
-import { LeaderboardRowCode } from "./components/leaderboard-row-code";
-import { LeaderboardRowLanguage } from "./components/leaderboard-row-language";
-import { LeaderboardRowRank } from "./components/leaderboard-row-rank";
-import { LeaderboardRowScore } from "./components/leaderboard-row-score";
+import { LeaderboardPreview } from "./components/leaderboard-preview";
+import { LeaderboardPreviewSkeleton } from "./components/leaderboard-preview-skeleton";
 import { Metrics } from "./components/metrics";
 
 export default function HomePage() {
@@ -44,52 +42,21 @@ export default function HomePage() {
           </a>
         </div>
 
-        <div className="border border-border-primary bg-bg-surface">
-          {/* Table Header */}
-          <div className="grid grid-cols-[40px_60px_1fr_80px] gap-4 border-b border-border-primary px-4 py-3 text-[10px] uppercase tracking-widest text-text-tertiary font-black">
-            <span>#</span>
-            <span>score</span>
-            <span>code</span>
-            <span className="text-right">lang</span>
-          </div>
-
-          {/* Table Rows */}
-          <LeaderboardRow>
-            <LeaderboardRowRank>1</LeaderboardRowRank>
-            <LeaderboardRowScore>1.2</LeaderboardRowScore>
-            <LeaderboardRowCode>{`function check(x) {
-  if (x == true) return true;
-  else if (x == false) return false;
-}`}</LeaderboardRowCode>
-            <LeaderboardRowLanguage>javascript</LeaderboardRowLanguage>
-          </LeaderboardRow>
-          <LeaderboardRow>
-            <LeaderboardRowRank>2</LeaderboardRowRank>
-            <LeaderboardRowScore>2.1</LeaderboardRowScore>
-            <LeaderboardRowCode>{`const data: any = JSON.parse(str) as any;`}</LeaderboardRowCode>
-            <LeaderboardRowLanguage>typescript</LeaderboardRowLanguage>
-          </LeaderboardRow>
-          <LeaderboardRow>
-            <LeaderboardRowRank>3</LeaderboardRowRank>
-            <LeaderboardRowScore>3.5</LeaderboardRowScore>
-            <LeaderboardRowCode>{`for (var i = 0; i < items.length; i++) {
-  setTimeout(() => console.log(items[i]), 1000);
-}`}</LeaderboardRowCode>
-            <LeaderboardRowLanguage>js</LeaderboardRowLanguage>
-          </LeaderboardRow>
-        </div>
-
-        <div className="pt-8 text-center">
-          <a
-            href="/leaderboard"
-            className="text-[10px] uppercase tracking-widest text-text-tertiary hover:text-accent-green transition-colors font-black italic group"
-          >
-            showing top 3 of 2,347 —{" "}
-            <span className="group-hover:underline underline-offset-4">
-              view full leaderboard {">>"}
-            </span>
-          </a>
-        </div>
+        <Suspense
+          fallback={
+            <div className="border border-border-primary bg-bg-surface">
+              <div className="grid grid-cols-[40px_60px_1fr_80px] gap-4 border-b border-border-primary px-4 py-3 text-[10px] uppercase tracking-widest text-text-tertiary font-black">
+                <span>#</span>
+                <span>score</span>
+                <span>code</span>
+                <span className="text-right">lang</span>
+              </div>
+              <LeaderboardPreviewSkeleton />
+            </div>
+          }
+        >
+          <LeaderboardPreview />
+        </Suspense>
       </section>
     </div>
   );

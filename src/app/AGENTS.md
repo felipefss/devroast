@@ -19,3 +19,4 @@ Este diretório contém a estrutura de rotas da aplicação (Next.js App Router)
 4. **Integração com tRPC**
    - **No Server**: Utilize a importação do Server Caller (`import { trpc } from "@/trpc/server"`).
    - **No Client**: Utilize os hooks via React Query (`import { trpc } from "@/trpc/client"`).
+   - **Múltiplas Queries no Server**: Ao carregar dados de múltiplas rotas tRPC num Server Component de forma independente, sempre utilize `await Promise.all([trpc.rotaA(), trpc.rotaB()])` para execução em paralelo.
