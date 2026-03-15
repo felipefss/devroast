@@ -7,15 +7,17 @@ export interface LeaderboardRowCodeProps {
 }
 
 export async function LeaderboardRowCode({ code, language }: LeaderboardRowCodeProps) {
-  const lines = code.split("\n");
+  // Fix escaped newlines that might be stored literally in the database
+  const normalizedCode = code.replace(/\\n/g, "\n");
+  const lines = normalizedCode.split("\n");
   const isLong = lines.length > 5;
-  const truncatedCode = isLong ? lines.slice(0, 5).join("\n") : code;
+  const truncatedCode = isLong ? lines.slice(0, 5).join("\n") : normalizedCode;
 
   if (!isLong) {
     return (
       <div className="min-w-0">
         <CodeBlock
-          code={code}
+          code={normalizedCode}
           language={language}
           className="!bg-transparent [&>div]:!p-0"
           showLineNumbers={false}
@@ -36,7 +38,7 @@ export async function LeaderboardRowCode({ code, language }: LeaderboardRowCodeP
       }
       full={
         <CodeBlock
-          code={code}
+          code={normalizedCode}
           language={language}
           className="!bg-transparent [&>div]:!p-0"
           showLineNumbers={false}
