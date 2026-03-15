@@ -7,11 +7,42 @@ export interface CodeBlockProps extends HTMLAttributes<HTMLDivElement> {
   showLineNumbers?: boolean;
 }
 
+// Global cache for Shiki highlighter to prevent multiple instances
+const globalForShiki = globalThis as unknown as {
+  __shikiHighlighter?: Promise<Highlighter>;
+};
+
 async function getHighlighter(): Promise<Highlighter> {
-  return createHighlighter({
-    themes: ["vesper"],
-    langs: ["javascript", "typescript", "python", "java", "csharp", "jsx", "tsx"],
-  });
+  if (!globalForShiki.__shikiHighlighter) {
+    globalForShiki.__shikiHighlighter = createHighlighter({
+      themes: ["vesper"],
+      langs: [
+        "javascript",
+        "typescript",
+        "python",
+        "rust",
+        "go",
+        "java",
+        "c",
+        "cpp",
+        "csharp",
+        "ruby",
+        "php",
+        "swift",
+        "kotlin",
+        "sql",
+        "html",
+        "css",
+        "bash",
+        "json",
+        "yaml",
+        "markdown",
+        "jsx",
+        "tsx",
+      ],
+    });
+  }
+  return globalForShiki.__shikiHighlighter;
 }
 
 export async function CodeBlock({

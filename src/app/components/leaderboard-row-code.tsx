@@ -1,33 +1,47 @@
-import type { HTMLAttributes, ReactNode } from "react";
+import { CodeBlock } from "@/components/ui/code-block";
+import { LeaderboardRowCodeClient } from "./leaderboard-row-code-client";
 
-export interface LeaderboardRowCodeProps extends HTMLAttributes<HTMLDivElement> {
-  children: ReactNode;
+export interface LeaderboardRowCodeProps {
+  code: string;
+  language: string;
 }
 
-function parseCodeWithComments(code: string): ReactNode {
-  const commentRegex = /(\/\/.*$|\/\*[\s\S]*?\*\/)/gm;
-  const parts = code.split(commentRegex);
+export async function LeaderboardRowCode({ code, language }: LeaderboardRowCodeProps) {
+  const lines = code.split("\n");
+  const isLong = lines.length > 5;
+  const truncatedCode = isLong ? lines.slice(0, 5).join("\n") : code;
 
-  return parts.map((part) => {
-    if (part?.startsWith("//") || part?.startsWith("/*")) {
-      return (
-        <span key={part} className="text-text-tertiary">
-          {part}
-        </span>
-      );
-    }
-    return part;
-  });
-}
-
-export function LeaderboardRowCode({ children, className, ...props }: LeaderboardRowCodeProps) {
-  const codeString = typeof children === "string" ? children : "";
+  if (!isLong) {
+    return (
+      <div className="min-w-0">
+        <CodeBlock
+          code={code}
+          language={language}
+          className="!bg-transparent [&>div]:!p-0"
+          showLineNumbers={false}
+        />
+      </div>
+    );
+  }
 
   return (
-    <div className="min-w-0" {...props}>
-      <code className="font-mono text-xs text-text-primary whitespace-pre leading-relaxed block">
-        {parseCodeWithComments(codeString)}
-      </code>
-    </div>
+    <LeaderboardRowCodeClient
+      preview={
+        <CodeBlock
+          code={truncatedCode}
+          language={language}
+          className="!bg-transparent [&>div]:!p-0"
+          showLineNumbers={false}
+        />
+      }
+      full={
+        <CodeBlock
+          code={code}
+          language={language}
+          className="!bg-transparent [&>div]:!p-0"
+          showLineNumbers={false}
+        />
+      }
+    />
   );
 }

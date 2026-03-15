@@ -27,7 +27,7 @@ export async function LeaderboardPreview() {
           <LeaderboardRow key={roast.id}>
             <LeaderboardRowRank>{index + 1}</LeaderboardRowRank>
             <LeaderboardRowScore>{roast.score}</LeaderboardRowScore>
-            <LeaderboardRowCode>{roast.code}</LeaderboardRowCode>
+            <LeaderboardRowCode code={roast.code} language={roast.language} />
             <LeaderboardRowLanguage>{roast.language}</LeaderboardRowLanguage>
           </LeaderboardRow>
         ))}
