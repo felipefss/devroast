@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -156,4 +157,27 @@ export default async function RoastResultPage({ params }: PageProps) {
   } catch (_error) {
     notFound();
   }
+}
+
+export async function generateMetadata(props: PageProps): Promise<Metadata> {
+  const params = await props.params;
+  const id = params.id;
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+  const ogUrl = new URL(`/api/og/roast/${id}`, appUrl).toString();
+
+  return {
+    title: "DevRoast Result",
+    description: "Check out this brutal code review from DevRoast.",
+    metadataBase: new URL(appUrl),
+    openGraph: {
+      images: [
+        {
+          url: ogUrl,
+          width: 1200,
+          height: 630,
+          alt: "DevRoast OpenGraph Image",
+        },
+      ],
+    },
+  };
 }
