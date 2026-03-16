@@ -15,6 +15,12 @@ Adicionar imagens OpenGraph (OG) geradas dinamicamente para os links de comparti
 
 ## Decisões Técnicas
 - **Ferramenta de Geração**: `@takumi-rs/image-response` em vez de `@vercel/og` (conforme solicitado e pela velocidade da engine Rust).
+- **Dimensões da Imagem**: `1200x630` (padrão OpenGraph).
+- **Fontes**: 
+  - Takumi já inclui Geist por padrão para fontes sem serifa.
+  - Para `JetBrains Mono` e `Geist`, se necessário forçar o uso, os buffers (`.ttf`) serão lidos do sistema de arquivos (`fs.readFile`) ou via requisição se remoto, e passados para a propriedade `fonts` do `ImageResponse`.
+- **Tratamento de Erros**:
+  - Se o `id` for inválido ou o roast não for encontrado, a API deve fazer um catch do erro e retornar uma imagem de "Not Found" ou uma imagem genérica padrão do DevRoast (ex: logo centralizada).
 - **Dados**: Extraídos via tRPC server-caller / camada de DB já existente (`trpc.getRoastById`).
 - **Design & Cores**:
   - `bg-page`: `#0A0A0A`
