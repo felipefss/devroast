@@ -1,6 +1,6 @@
 import { createGoogleGenerativeAI } from "@ai-sdk/google";
 import { TRPCError } from "@trpc/server";
-import { generateObject } from "ai";
+import { generateText } from "ai";
 import { and, count, eq, gte, sql } from "drizzle-orm";
 import { z } from "zod";
 import { db } from "../../db";
@@ -87,17 +87,44 @@ export const appRouter = router({
       }
 
       // 3. Call Gemini API
+      const schemaDescription = `
+Expected JSON schema:
+{
+  "score": number (0 to 10),
+  "verdict": string (2-4 word slug like 'needs_serious_help'),
+  "summary": string (1-2 sentence overall summary),
+  "details": Array<{
+    "type": "good" | "warning" | "critical",
+    "title": string (under 5 words),
+    "description": string (1-2 sentences)
+  }> (3 to 6 items),
+  "suggestedFix": string (The completely rewritten code)
+}
+`;
+
       const systemPrompt =
         input.roastMode === "brutal"
-          ? "You are an absolutely ruthless, sarcastic, and deeply technical senior engineer. Roast the provided code without mercy. Be highly technical, pedantic, and devastatingly accurate. Output exclusively in the requested JSON schema."
-          : "You are a slightly grumpy senior engineer reviewing a junior's PR. Provide a sarcastic but ultimately helpful review of the code. Output exclusively in the requested JSON schema.";
+          ? `You are an absolutely ruthless, sarcastic, and deeply technical senior engineer. Roast the provided code without mercy. Be highly technical, pedantic, and devastatingly accurate. You MUST reply ONLY with a valid JSON matching the exact schema. Do not wrap the JSON in markdown blocks like \`\`\`json.\n${schemaDescription}`
+          : `You are a slightly grumpy senior engineer reviewing a junior's PR. Provide a sarcastic but ultimately helpful review of the code. You MUST reply ONLY with a valid JSON matching the exact schema. Do not wrap the JSON in markdown blocks like \`\`\`json.\n${schemaDescription}`;
 
-      const { object: roastResult } = await generateObject({
+      const { text: generatedText } = await generateText({
         model: google("gemini-2.5-flash"),
-        schema: aiRoastSchema,
         system: systemPrompt,
         prompt: `Language: ${input.language}\n\nCode:\n${input.code}`,
       });
+
+      let jsonString = generatedText.trim();
+      if (jsonString.startsWith("```json")) {
+        jsonString = jsonString.replace(/^```json/, "");
+      } else if (jsonString.startsWith("```")) {
+        jsonString = jsonString.replace(/^```/, "");
+      }
+      if (jsonString.endsWith("```")) {
+        jsonString = jsonString.replace(/```$/, "");
+      }
+
+      const parsedJson = JSON.parse(jsonString.trim());
+      const roastResult = aiRoastSchema.parse(parsedJson);
 
       // 4. Save to Database
       const [submission] = await db
