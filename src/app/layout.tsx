@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { JetBrains_Mono } from "next/font/google";
+import Link from "next/link";
 import "./globals.css";
 
 import { TRPCProvider } from "../trpc/client";
@@ -27,16 +28,19 @@ export default function RootLayout({
         <TRPCProvider>
           <header className="w-full border-b border-border-primary py-4">
             <div className="mx-auto max-w-4xl px-8 flex items-center justify-between">
-              <div className="flex items-center gap-2 font-bold text-accent-green italic tracking-tighter text-lg">
+              <Link
+                href="/"
+                className="flex items-center gap-2 font-bold text-accent-green italic tracking-tighter text-lg"
+              >
                 <span>{">"} devroast</span>
-              </div>
+              </Link>
               <nav>
-                <a
+                <Link
                   href="/leaderboard"
                   className="text-xs uppercase tracking-widest text-text-secondary hover:text-accent-green transition-colors"
                 >
                   Leaderboard
-                </a>
+                </Link>
               </nav>
             </div>
           </header>
