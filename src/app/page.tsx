@@ -4,6 +4,8 @@ import { LeaderboardPreview } from "./components/leaderboard-preview";
 import { LeaderboardPreviewSkeleton } from "./components/leaderboard-preview-skeleton";
 import { Metrics } from "./components/metrics";
 
+export const revalidate = 3600;
+
 export default function HomePage() {
   return (
     <div className="mx-auto max-w-4xl px-8 py-16 space-y-24">

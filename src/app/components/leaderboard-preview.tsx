@@ -7,7 +7,7 @@ import { LeaderboardRowScore } from "./leaderboard-row-score";
 
 export async function LeaderboardPreview() {
   const [leaderboard, metrics] = await Promise.all([
-    trpc.getLeaderboardPreview(),
+    trpc.getLeaderboard({ limit: 3 }),
     trpc.getMetrics(),
   ]);
 
